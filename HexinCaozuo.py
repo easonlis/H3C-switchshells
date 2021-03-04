@@ -17,7 +17,7 @@ PATTERN_IP_MAC = re.compile(r"(?:[0-9A-F]{4}[-]){2}(?:[0-9A-F]{4})|(?:192|172)\.
 
 
 class HexinCaozuo(object):
-    def __init__(self, adm, adm_pwd, ip='192.168.136.1', port=22):
+    def __init__(self, adm, adm_pwd, ip='192.168.*.*', port=22):
         self.adm = adm
         self.adm_pwd = adm_pwd
         self.ip = ip
@@ -152,9 +152,7 @@ class HexinCaozuo(object):
         # 如果是 IP 格式先转换为 MAC 再查聚合端口
         else:
             ip = item
-            # 192.168.138.2    01d4-3a65-080a-85     Sep 30 17:36:45 2020  Auto(C)
-            # 192.168.138.31   b42e-9970-644d        Sep 30 15:51:52 2020  Static(C)
-            # 192.168.138.239  00cf-e037-413f        Sep 30 18:27:25 2020  Static(C)
+            # 192.168.*.*    01d4-3a65-080a-85     Sep 30 17:36:45 2020  Auto(C)
             # include "{ip}{space}\w+ 用于在交换机中严格匹配记录
             last_len = len(ip.split('.')[-1])
             spaces = ['', '    ', '   ', '  ']

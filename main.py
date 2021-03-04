@@ -6,7 +6,7 @@
 # @Description : 
 """
 import re,time,random,logging
-import ftp
+import ftp,os
 from HexinCaozuo import HexinCaozuo
 from JiaohuanjiCaozuo import JiaohuanjiCaozuo
 logging.basicConfig(filename="test.log", level=logging.DEBUG)
@@ -29,34 +29,28 @@ menu = ("""
 
 # 交换机列表
 switches = [
-    '192.168.136.1', '192.168.136.2', '192.168.136.5',
-    '192.168.136.6', '192.168.136.7', '192.168.136.9',
-    '192.168.136.11', '192.168.136.12', '192.168.136.13',
-    '192.168.136.14', '192.168.136.15', '192.168.136.16',
-    '192.168.136.17', '192.168.136.18', '192.168.136.19',
-    '192.168.136.20', '192.168.136.21', '192.168.136.22',
-    '192.168.136.23', '192.168.136.24'
+    '192.168.*.*', '192.168.*.*', '192.168.*.*',
+    '192.168.*.*', '192.168.*.*', '192.168.*.*',
 ]
 
 # 核心上各聚合端口对应连接的交换机
 bagges = {
-    'BAGG1': '192.168.136.11', 'BAGG2': '192.168.136.12', 'BAGG3': '192.168.136.13',
-    'BAGG4': '192.168.136.14', 'BAGG5': '192.168.136.15', 'BAGG6': '192.168.136.16',
-    'BAGG7': '192.168.136.17', 'BAGG8': '192.168.136.18', 'BAGG9': '192.168.136.20',
-    'BAGG10': '192.168.136.6', 'BAGG20': '192.168.136.5', 'BAGG30': '192.168.136.2',
-    'GE1/0/13': '192.168.136.7', 'GE1/0/14': '192.168.136.9', 'GE2/0/13': '192.168.136.19'
+    'BAGG1': '192.168.*.*', 'BAGG2': '192.168.*.*', 'BAGG3': '192.168.*.*',
+    'BAGG4': '192.168.*.*', 'BAGG5': '192.168.*.*', 'BAGG6': '192.168.*.*',
 }
 
 # 交换机登录账户，ftp登录账户
-adm, adm_pwd ='admin', 'MYDM@12#$'
-ftp_usr, ftp_pwd ='ftp', 'Ejh18FRNUoY8OK8h'
+adm, adm_pwd ='admin', 'admin123'
+ftp_usr, ftp_pwd ='ftp', 'ftp123'
 
 
 def get_controller(index):
     # 1.导出所有交换机配置
     if index == '1':
         ftpfile = "startup.cfg"
-        save_path = "/switch-config/{}-{}.cfg"
+        if not os.path.exists("../switch-config/"):
+            os.mkdir("../switch-config/")
+        save_path = "../switch-config/{}-{}.cfg"
         for host in switches:
             session = ftp.FtpCls(host, ftp_usr, ftp_pwd)
             localfile = save_path.format(host, time.strftime("%Y%m%d"))
